@@ -29,7 +29,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
 
       if (!equalPressed){
-        answerFont =24;
+        answerFont =26;
       }
 
       print("");
@@ -73,8 +73,8 @@ class _MainPageState extends State<MainPage> {
                                         changeState();
                                       },
                                       title: Column( children: <Widget>[
-                                                Align(alignment: Alignment(0.9,1),  child: Text( historyList[index][0] , style: TextStyle(color: Colors.white10, fontSize: 24))),
-                                                Align(alignment: Alignment(0.9,1),  child: Text("= "+ historyList[index][1], style: TextStyle(color: Colors.white10, fontSize: 20))),
+                                                Align(alignment: Alignment(0.9,1),  child: Text( historyList[index][0] , style: TextStyle(color: Colors.grey, fontSize: 24))),
+                                                Align(alignment: Alignment(0.9,1),  child: Text("= "+ historyList[index][1], style: TextStyle(color: Colors.grey, fontSize: 20))),
                                       ],),
                                                   
                                    );
@@ -90,7 +90,7 @@ class _MainPageState extends State<MainPage> {
                         child: SingleChildScrollView(
 
                                 scrollDirection: Axis.horizontal,reverse: true ,
-                                child:Text( operations , style: TextStyle(color: Colors.white, fontSize: 26)),
+                                child:Text( operations , style: TextStyle(color: Colors.white, fontSize: 28)),
 
                               )
                           

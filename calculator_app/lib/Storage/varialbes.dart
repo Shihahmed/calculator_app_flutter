@@ -12,4 +12,4 @@
 
   bool equalPressed = false;
 
-  double answerFont = 24;
+  double answerFont = 26;
