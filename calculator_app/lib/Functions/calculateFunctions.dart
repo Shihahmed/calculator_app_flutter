@@ -30,6 +30,10 @@ class CalculateFunctions {
 
         List<String> inBracketsList = listOperations.sublist(openIndexIside, closeIndexInside);
 
+        if(inBracketsList.length == 1 && inBracketsList[0] == "-"){
+          inBracketsList.clear();
+        }
+
         listOperations.replaceRange( openIndex, closeIndex, prioritySecond( priorityFirst(inBracketsList) ));
         
         calculate(listOperations);
@@ -56,9 +60,10 @@ class CalculateFunctions {
 
         if(listOperations[i] == "×"){
 
-          listOperations.replaceRange(i-1, 
-                                      i+2,
-                                      [(double.parse(listOperations[i-1]) * double.parse(listOperations[i+1])).toString()] );
+          double firstOperand  = double.parse(listOperations[i-1]);
+          double secondOperand = double.parse(listOperations[i+1]);
+
+          listOperations.replaceRange(i-1, i+2, [ (firstOperand * secondOperand).toString() ] );
 
           i = i+2;
           counter++;
@@ -68,10 +73,10 @@ class CalculateFunctions {
 
         if(listOperations[i] == "÷"){
 
-          listOperations.replaceRange(i-1,
-                                      i+2,
-                                      [(double.parse(listOperations[i-1]) / double.parse(listOperations[i+1])).toString()] );
+          double firstOperand  = double.parse(listOperations[i-1]);
+          double secondOperand = double.parse(listOperations[i+1]);
 
+          listOperations.replaceRange(i-1, i+2, [ (firstOperand / secondOperand).toString() ] );
           i = i+2;
           counter++;
           continue;
@@ -99,9 +104,10 @@ class CalculateFunctions {
         if(listOperations[i] == "+"){
 
 
-          listOperations.replaceRange(i-1,
-                                      i+2,
-                                      [(double.parse(listOperations[i-1]) + double.parse(listOperations[i+1])).toString()] );
+          double firstOperand  = double.parse(listOperations[i-1]);
+          double secondOperand = double.parse(listOperations[i+1]);
+
+          listOperations.replaceRange(i-1, i+2, [ (firstOperand + secondOperand).toString() ] );
 
           i = i+2;
           counter++;
@@ -111,18 +117,20 @@ class CalculateFunctions {
 
         if(listOperations[i] == "-"){
 
-          if(i == 0){
+          
+          
 
-            listOperations.replaceRange(i,
-                                        i+2,
-                                        [(-1 * double.parse(listOperations[i+1])).toString()]);
+          if(i == 0){
+            double secondOperand = double.parse(listOperations[i+1]);
+
+            listOperations.replaceRange(i, i+2, [(-1 * secondOperand).toString()]);
 
           }
           else{
+            double firstOperand  = double.parse(listOperations[i-1]);
+            double secondOperand = double.parse(listOperations[i+1]);
 
-            listOperations.replaceRange(i-1,
-                                      i+2,
-                                      [(double.parse(listOperations[i-1]) - double.parse(listOperations[i+1])).toString()] );
+            listOperations.replaceRange(i-1, i+2, [ (firstOperand - secondOperand).toString() ] );
 
           }
 

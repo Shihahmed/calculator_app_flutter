@@ -16,9 +16,9 @@ class FormatOperations {
 
   void addDigit(String digit){
 
-    if(equalPressed) {
+    if(isEqualPressed) {
       operationsListBufer.clear();
-      equalPressed = false;
+      isEqualPressed = false;
     }
 
     if (operationsListBufer.length>0 ){
@@ -92,13 +92,13 @@ class FormatOperations {
 
   void addOperation(String operation){
     
-    if(equalPressed) {
-      equalPressed = false;
+    if(isEqualPressed) {
+      isEqualPressed = false;
     }
 
-    if(operationsListBufer != null && operationsListBufer.length>0){
+    if( operationsListBufer != null && operationsListBufer.length>0){
 
-      if ( isOperation(operationsListBufer[operationsListBufer.length-1]) || operationsListBufer[operationsListBufer.length-1] == "."){
+      if ( isOperation(operationsListBufer.last) || operationsListBufer.last == "."){
 
         if ( operationsListBufer[operationsListBufer.length-2] == "(" && operation == "-" ){
 
@@ -135,14 +135,25 @@ class FormatOperations {
 
   }
 
+  void addPercent(){
+
+    if( operationsListBufer.isNotEmpty && operationsListBufer.length>0
+         && !isOperation(operationsListBufer.last) && operationsListBufer.last != "(" && operationsListBufer.last != ")"){
+
+      operationsListBufer.add("%");
+
+    }
+
+  }
+
   void addBrackets(){
 
-      if(equalPressed) {
+      if(isEqualPressed) {
         operationsListBufer.clear();
-        equalPressed = false;
+        isEqualPressed = false;
       }
 
-      if ( operationsListBufer.isEmpty || isOperation(operationsListBufer.last) ){
+      if ( operationsListBufer.isEmpty || isOperation(operationsListBufer.last) || operationsListBufer.last == "(" ){
         operationsListBufer.add("(");
       }
       else{
@@ -206,18 +217,77 @@ class FormatOperations {
         }
         else if(operation == "%" && numbers.isNotEmpty){
 
-          numbers = (double.parse( numbers) / 100 ).toString();
+          if (operationsList.isNotEmpty && isOperation(operationsList.last)){
+            
+            numbers = (double.parse( operationsList[operationsList.length-2]) / 100 * double.parse(numbers) ).toString();
+
+            if(numbers[numbers.length-1] == "0" && numbers[numbers.length-2] == "." ){
+
+              numbers = numbers.substring(0, numbers.length-2);
+
+            }
+
+          }
+          else{
+            numbers = (double.parse( numbers) / 100 ).toString();
+
+            if(numbers[numbers.length-1] == "0" && numbers[numbers.length-2] == "." ){
+
+              numbers = numbers.substring(0, numbers.length-2);
+
+            }
+
+          }
 
         }
-        else if(operation != "%"){
+        else if(operation != "%" && operation.isNotEmpty){
 
           numbers += operation; 
 
-        } 
+        }  
 
       }
 
       if (numbers.isNotEmpty){
+        
+        bool dotInEnd = false;
+        bool dotAndZetoInEnd = false;
+        
+        if (numbers[numbers.length-1] == ".") dotInEnd = true;
+
+
+        if(numbers.length >1 && numbers[numbers.length-1] == "0" && numbers[numbers.length-2] == ".") dotAndZetoInEnd = true;
+
+
+        numbers = double.parse(numbers).toString();
+
+
+        if(!dotInEnd){
+
+          if(numbers[numbers.length-1] == "0" && numbers[numbers.length-2] == "."){
+
+            numbers = numbers.substring(0, numbers.length-2);
+
+          }
+
+        }
+
+        if(dotInEnd){
+
+          if(numbers[numbers.length-1] == "0" && numbers[numbers.length-2] == "."){
+
+            numbers = numbers.substring(0, numbers.length-2);
+
+          }
+        
+          numbers += ".";
+        } 
+
+        if(dotAndZetoInEnd){
+
+          numbers += ".0";
+
+        }
 
         operationsList.add(numbers);
 
@@ -266,7 +336,7 @@ class FormatOperations {
 
             for (int i = positionDot-1; i >= 0 ; i--) {
               if (counter == 3 && i != 0){
-                operationWithCommas = "," + operation[i] + operationWithCommas;
+                operationWithCommas = " " + operation[i] + operationWithCommas;
                 counter = 0;
               }
               else{
@@ -281,7 +351,7 @@ class FormatOperations {
 
             for (int i = operation.length-1; i >= 0 ; i--) {
               if (counter == 3 && i != 0){
-                operationWithCommas = "," + operation[i] + operationWithCommas;
+                operationWithCommas = " " + operation[i] + operationWithCommas;
                 counter = 0;
               }
               else{
@@ -293,6 +363,10 @@ class FormatOperations {
             
           }
 
+        }
+
+        if(operationWithCommas == "In fin ity"){
+          operationWithCommas = "∞";
         }
 
         operations += operationWithCommas;
@@ -336,7 +410,7 @@ class FormatOperations {
       
       for (int i = positionDot-1; i >= 0 ; i--) {
         if (counter == 3 && i != 0){
-          answerWithCommas = "," + rawAnswer[i] + answerWithCommas;
+          answerWithCommas = " " + rawAnswer[i] + answerWithCommas;
           counter = 0;
         }
         else{
@@ -351,7 +425,7 @@ class FormatOperations {
 
       for (int i = rawAnswer.length-1; i >= 0 ; i--) {
         if (counter == 3 && i != 0){
-          answerWithCommas = "," + rawAnswer[i] + answerWithCommas;
+          answerWithCommas = " " + rawAnswer[i] + answerWithCommas;
           counter = 0;
         }
         else{
@@ -365,6 +439,10 @@ class FormatOperations {
 
     if(haveMinus){
       answerWithCommas = "-" + answerWithCommas;
+    }
+
+    if(answerWithCommas == "In fin ity"){
+      answerWithCommas = "∞";
     }
 
     answer = answerWithCommas;

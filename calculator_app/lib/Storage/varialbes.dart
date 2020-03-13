@@ -10,6 +10,6 @@
   List<List<String>> historyList      = [];
   List<List<String>> historyListBufer = [];
 
-  bool equalPressed = false;
+  bool isEqualPressed = false;
 
   double answerFont = 26;

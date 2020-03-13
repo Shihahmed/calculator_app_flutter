@@ -28,21 +28,18 @@ class _MainPageState extends State<MainPage> {
   void changeState(){
     setState(() {
 
-      if (!equalPressed){
-        answerFont =26;
+      if (!isEqualPressed){
+        answerFont = 26;
       }
 
-      print("");
-      print("button pressed");
       FormatOperations().splitListBufer();
       FormatOperations().setCommas();
-      print("l $operationsList");
-      print("hl $historyListBufer");
       
       CalculateFunctions().calculate(operationsList);
       
       FormatOperations().formatAnswer( (operationsList.length > 0) ? operationsList[0] : "0" );
       FormatOperations().cangeAC();
+
     });
   }
   
@@ -69,7 +66,8 @@ class _MainPageState extends State<MainPage> {
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                                       onTap: (){
-                                        operationsListBufer = historyListBufer[index];
+                                        operationsListBufer =  historyListBufer[index] + [];
+
                                         changeState();
                                       },
                                       title: Column( children: <Widget>[
@@ -118,7 +116,13 @@ class _MainPageState extends State<MainPage> {
 
                                     ),
                                      FlatButton(
-                                      child: Text("<-", style: TextStyle(color: Colors.white,fontSize: 26)),
+                                      child: Icon(
+                                                  Icons.trending_flat,
+                                                  textDirection:  TextDirection.rtl,
+                                                  color: Colors.white,
+                                                  size: 25.0
+                                                ),
+
                                       color: Colors.black87,
                                       shape: StadiumBorder(side: BorderSide(color: Colors.white,width: 0.8 )),
                                       onPressed: (){
@@ -130,7 +134,7 @@ class _MainPageState extends State<MainPage> {
                                       child: Text("%", style: TextStyle(color: Colors.white,fontSize: 26)),
                                       color: Colors.black87,
                                       onPressed: (){
-                                        FormatOperations().addOperation("%");
+                                        FormatOperations().addPercent();
                                         changeState();
                                       }
                                     ),
@@ -295,8 +299,19 @@ class _MainPageState extends State<MainPage> {
                                               });
 
                                               operationsListBufer.clear();
-                                              operationsListBufer.add(answer.replaceAll(",", ""));
-                                              equalPressed = true;
+
+                                              if(answer == "∞"){
+                                               
+                                                operationsListBufer.add("Infinity");
+
+                                              }
+                                              else{
+
+                                                operationsListBufer.add(answer.replaceAll(" ", ""));
+
+                                              }
+                                              
+                                              isEqualPressed = true;
 
                                             }                                          
                                             
