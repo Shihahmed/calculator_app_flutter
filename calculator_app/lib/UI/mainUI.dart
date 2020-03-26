@@ -8,7 +8,7 @@ class App extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return MaterialApp( home: MainPage());
+    return MaterialApp(home: MainPage());
   }
   
 }
@@ -20,6 +20,14 @@ class MainPage extends StatefulWidget {
 
   @override
   _MainPageState createState() => _MainPageState();
+}
+
+class CostomBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
+  }
 }
 
 
@@ -58,27 +66,31 @@ class _MainPageState extends State<MainPage> {
 
                        
                       Expanded(
-                        child: ListView.builder( 
+                        child: ScrollConfiguration(
+                          behavior: CostomBehavior(),
 
-                          reverse: true, 
-                          
-                          itemCount: historyList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return ListTile(
-                                      onTap: (){
-                                        operationsListBufer =  historyListBufer[index] + [];
+                          child: ListView.builder( 
+                            
 
-                                        changeState();
-                                      },
-                                      title: Column( children: <Widget>[
-                                                Align(alignment: Alignment(0.9,1),  child: Text( historyList[index][0] , style: TextStyle(color: Colors.grey, fontSize: 24))),
-                                                Align(alignment: Alignment(0.9,1),  child: Text("= "+ historyList[index][1], style: TextStyle(color: Colors.grey, fontSize: 20))),
-                                      ],),
-                                                  
-                                   );
-                          } 
-                        )
-                      ),
+                            reverse: true, 
+                            
+                            itemCount: historyList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ListTile(
+                                        onTap: (){
+                                          operationsListBufer =  historyListBufer[index] + [];
+
+                                          changeState();
+                                        },
+                                        title: Column( children: <Widget>[
+                                                  Align(alignment: Alignment(0.9,1),  child: Text( historyList[index][0] , style: TextStyle(color: Colors.grey, fontSize: 24))),
+                                                  Align(alignment: Alignment(0.9,1),  child: Text("= "+ historyList[index][1], style: TextStyle(color: Colors.grey, fontSize: 20))),
+                                        ],),
+                                                    
+                                    );
+                            } 
+                          )
+                      ),),
                        
 
                       Container(height: 4),
